@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Gallinero</title>
+<meta name="theme-color" content="#2E4A34">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gallinero">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar" id="topbar" hidden>
+    <button class="back" id="btnBack" type="button">‹ Inicio</button>
+    <h1 id="topTitle"></h1>
+    <span></span>
+  </header>
+
+  <!-- ============ INICIO ============ -->
+  <section class="screen active" id="screen-home">
+    <div class="hero">
+      <div class="date" id="homeDate"></div>
+      <h1>Gallinero</h1>
+      <div class="stats">
+        <div class="stat"><div class="k">Huevos hoy</div><div class="v" id="stHoy">—</div></div>
+        <div class="stat"><div class="k">Promedio 7 días</div><div class="v" id="stProm">—</div></div>
+        <div class="stat"><div class="k">Ganancia / día</div><div class="v" id="stGan">—</div></div>
+      </div>
+    </div>
+
+    <div class="tiles">
+      <button class="tile" data-go="recoleccion" type="button">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3.5 0-6 5.5-6 9.5A6 6 0 0 0 12 21a6 6 0 0 0 6-8.5C18 8.5 15.5 3 12 3z"/></svg></span>
+        <span><span class="name">Recolección</span><span class="sub" id="subRec">Huevos del día</span></span>
+      </button>
+      <button class="tile yolk" data-go="ventas" type="button">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 12H5L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg></span>
+        <span><span class="name">Ventas</span><span class="sub" id="subVentas">A quién vendiste</span></span>
+      </button>
+      <button class="tile yolk" data-go="clientes" type="button">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.3c2.9.4 5 2.7 5 5.7"/></svg></span>
+        <span><span class="name">Clientes</span><span class="sub" id="subClientes">Quién te compra</span></span>
+      </button>
+      <button class="tile" data-go="resumen" type="button">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V11M12 20V5M19 20v-7"/></svg></span>
+        <span><span class="name">Resumen</span><span class="sub">Gráficos y totales</span></span>
+      </button>
+      <button class="tile" data-go="aves" type="button">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 7c0-2 1.5-3 2-4M14 7c0-2 1.5-3 2-4"/></svg></span>
+        <span><span class="name">Aves y alimento</span><span class="sub" id="subAves">Plantel y costos</span></span>
+      </button>
+      <button class="tile" data-go="escenarios" type="button">
+        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg></span>
+        <span><span class="name">Escenarios</span><span class="sub">Rentabilidad</span></span>
+      </button>
+    </div>
+
+    <button class="wide-btn" data-go="backup" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M4 20h16"/></svg>
+      Copia de seguridad y exportar
+    </button>
+  </section>
+
+  <!-- ============ RECOLECCIÓN ============ -->
+  <section class="screen" id="screen-recoleccion" data-title="Recolección">
+    <p class="note">Anotá cuántos huevos juntaste. Un registro por fecha: si repetís la fecha, se actualiza.</p>
+    <div class="card form">
+      <div class="row"><label for="recFecha">Fecha</label><input type="date" id="recFecha"></div>
+      <div class="row"><label for="recJuntados">Huevos juntados</label><input type="number" id="recJuntados" inputmode="numeric" min="0" placeholder="0"></div>
+      <div class="row"><label for="recNota">Nota</label><input type="text" id="recNota" placeholder="opcional" autocomplete="off"></div>
+    </div>
+    <button class="btn" id="btnGuardarRec" type="button">Guardar recolección</button>
+    <h2>Historial</h2>
+    <div class="list" id="recList"></div>
+  </section>
+
+  <!-- ============ VENTAS ============ -->
+  <section class="screen" id="screen-ventas" data-title="Ventas">
+    <p class="note">Registrá cada venta con a quién se la hiciste. Podés cargar varias el mismo día.</p>
+    <div class="card form">
+      <div class="row"><label for="ventaFecha">Fecha</label><input type="date" id="ventaFecha"></div>
+      <div class="row"><label for="ventaCliente">Cliente</label><input type="text" id="ventaCliente" list="clientesList" placeholder="¿A quién?" autocomplete="off" autocapitalize="words"></div>
+      <div class="row"><label for="ventaCantidad">Huevos vendidos</label><input type="number" id="ventaCantidad" inputmode="numeric" min="0" placeholder="0"></div>
+      <div class="row"><label for="ventaMonto">Ingreso ($)</label><input type="number" id="ventaMonto" inputmode="decimal" min="0" step="0.01" placeholder="0,00"></div>
+      <div class="row" id="ventaSuggestRow" hidden><span class="suggest" id="ventaSuggest"></span></div>
+      <div class="row"><label for="ventaNota">Nota</label><input type="text" id="ventaNota" placeholder="opcional" autocomplete="off"></div>
+    </div>
+    <datalist id="clientesList"></datalist>
+    <button class="btn" id="btnGuardarVenta" type="button">Guardar venta</button>
+    <h2>Historial</h2>
+    <div class="list" id="ventaList"></div>
+  </section>
+
+  <!-- ============ CLIENTES ============ -->
+  <section class="screen" id="screen-clientes" data-title="Clientes">
+    <p class="note">Total vendido a cada cliente. Tocá un cliente para ver sus compras.</p>
+    <div class="list" id="clienteList"></div>
+  </section>
+
+  <!-- ============ RESUMEN ============ -->
+  <section class="screen" id="screen-resumen" data-title="Resumen">
+    <div class="kpis">
+      <div class="kpi"><div class="k">Aves totales</div><div class="v" id="kpiAves">—</div></div>
+      <div class="kpi"><div class="k">Costo alimento / día</div><div class="v" id="kpiCosto">—</div></div>
+      <div class="kpi"><div class="k">Huevos, prom. 7 días</div><div class="v" id="kpiHuevos">—</div></div>
+      <div class="kpi"><div class="k">Ganancia neta / día</div><div class="v" id="kpiGan">—</div></div>
+    </div>
+    <h2>Últimos 14 días</h2>
+    <p class="note">Huevos juntados y vendidos.</p>
+    <div class="chart-card"><div class="chart-box"><canvas id="chartHistorial"></canvas></div></div>
+    <h2>Costo diario por alimento</h2>
+    <div class="chart-card"><div class="chart-box short"><canvas id="chartComposicion"></canvas></div></div>
+  </section>
+
+  <!-- ============ AVES Y ALIMENTO ============ -->
+  <section class="screen" id="screen-aves" data-title="Aves y alimento">
+    <h2>Plantel</h2>
+    <div class="card form">
+      <div class="row"><label for="inGallinas">Gallinas ponedoras<span class="hint">1 a 2 años</span></label><input type="number" id="inGallinas" inputmode="numeric" min="0"></div>
+      <div class="row"><label for="inGallos">Gallos<span class="hint">adultos</span></label><input type="number" id="inGallos" inputmode="numeric" min="0"></div>
+      <div class="row"><label for="inPollas">Pollas en recría<span class="hint">6 a 7 semanas</span></label><input type="number" id="inPollas" inputmode="numeric" min="0"></div>
+      <div class="row"><label for="inConsAdulta">Consumo ave adulta<span class="hint">gramos por día</span></label><input type="number" id="inConsAdulta" inputmode="numeric" min="0"></div>
+      <div class="row"><label for="inConsPolla">Consumo polla<span class="hint">gramos por día</span></label><input type="number" id="inConsPolla" inputmode="numeric" min="0"></div>
+    </div>
+    <h2>Venta y postura</h2>
+    <div class="card form">
+      <div class="row"><label for="inPrecioMaple">Maple de 30 huevos<span class="hint">precio de venta ($)</span></label><input type="number" id="inPrecioMaple" inputmode="decimal" min="0"></div>
+      <div class="row row-range"><label for="inTasaPostura">Postura estándar<span class="hint">referencia 90–95%</span></label><input type="range" id="inTasaPostura" min="50" max="100"><span class="range-val" id="tasaVal"></span></div>
+    </div>
+    <h2>Alimentos de la mezcla</h2>
+    <p class="note">Precio por bolsa de 25 kg y porcentaje de la mezcla. Debe sumar 100%.</p>
+    <div class="list" id="feedList"></div>
+    <div class="mix" id="mixTotal"></div>
+    <button class="btn secondary small" id="btnAddFeed" type="button">+ Agregar alimento</button>
+    <h2>Consumo diario</h2>
+    <div class="chart-card"><div class="chart-box short"><canvas id="chartConsumo"></canvas></div></div>
+  </section>
+
+  <!-- ============ ESCENARIOS ============ -->
+  <section class="screen" id="screen-escenarios" data-title="Escenarios">
+    <p class="note">Cuatro formas de mirar la rentabilidad, usando tu producción registrada de los últimos 7 días con datos.</p>
+    <div id="scnList"></div>
+    <h2>Ganancia por día</h2>
+    <div class="chart-card"><div class="chart-box short"><canvas id="chartGanDia"></canvas></div></div>
+    <h2>Ganancia por mes</h2>
+    <div class="chart-card"><div class="chart-box short"><canvas id="chartGanMes"></canvas></div></div>
+    <p class="foot">Tasa de postura de referencia según guías técnicas de líneas comerciales: 90 a 95% en pico de producción.</p>
+  </section>
+
+  <!-- ============ COPIA DE SEGURIDAD ============ -->
+  <section class="screen" id="screen-backup" data-title="Copia de seguridad">
+    <p class="note">Tus datos viven solo en este teléfono. Guardá una copia de vez en cuando (por ejemplo en Archivos o iCloud) para no perderlos si cambiás de celular.</p>
+    <button class="btn" id="btnExportJson" type="button">Guardar copia completa</button>
+    <button class="btn secondary" id="btnImportJson" type="button">Restaurar desde una copia</button>
+    <input class="file-input" type="file" id="fileImport" accept=".json,application/json">
+    <h2>Planillas</h2>
+    <div class="btn-row">
+      <button class="btn secondary small" id="btnCsvRec" type="button">Recolección CSV</button>
+      <button class="btn secondary small" id="btnCsvVentas" type="button">Ventas CSV</button>
+    </div>
+  </section>
+
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="vendor/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
